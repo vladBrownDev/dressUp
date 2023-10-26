@@ -5,6 +5,7 @@ import { usePhotoGallery, UserPhoto } from '../hooks/usePhotoGallery';
 
 const Tab2: React.FC = () => {
   const { deletePhoto, photos, takePhoto } = usePhotoGallery();
+  console.log(photos)
   const [photoToDelete, setPhotoToDelete] = useState<UserPhoto>();
 
   return (
@@ -15,11 +16,6 @@ const Tab2: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-      <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Photo Gallery</IonTitle>
-          </IonToolbar>
-        </IonHeader>
         <IonGrid>
           <IonRow>
             {photos.map((photo, index) => (

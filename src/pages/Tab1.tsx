@@ -21,7 +21,7 @@ const Tab1: React.FC = () => {
           <div className='welcomeWrapper'>
               <h1 ref={firstTitle} className={'welcomeTitle'}> {welcomestr} </h1>
               <h1 ref={secondTitle} className={'welcomeTitle'}> Приветствуем в Dress Up! </h1>
-              <img className='welcomeImg' src="/src/media/welcome.png" alt=""/>
+              <img className='welcomeImg' src="/src/media/woman.png" alt=""/>
               <IonButtons className='btnWrapper'>
                   <IonButton className='welcomeButton'>Добавить из галереи</IonButton>
                   <IonButton className='welcomeButton'>Сделать фото</IonButton>

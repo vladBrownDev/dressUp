@@ -38,10 +38,12 @@ h1.welcomeTitle:nth-child(2) {
 }
 
 .welcomeImg {
-  object-fit: contain;
-  width: calc(100vw - 70px);
-  max-width: 250px;
-  margin-top: 50px;
+  margin-right: 32px;
+  object-fit: cover;
+  width: 110vw;
+  max-width: 400px;
+  max-height: 400px;
+  margin-top: 10px;
 }
 
 .btnWrapper {
