@@ -1,4 +1,6 @@
 import { Redirect, Route } from 'react-router-dom';
+import { Preferences } from '@capacitor/preferences';
+import { useState, useEffect } from 'react'
 import {
   IonApp,
   IonIcon,
@@ -7,7 +9,7 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
-  setupIonicReact
+  setupIonicReact,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { images, square, triangle } from 'ionicons/icons';
@@ -36,41 +38,64 @@ import './theme/variables.css';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
-          </Route>
-          <Route exact path="/tab2">
-            <Tab2 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-        </IonRouterOutlet>
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab2" href="/tab2">
-            <IonIcon icon={images} />
-            <IonLabel>Photos</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+
+  const [firstEnter, setFirstEnter] = useState('unset')
+  async function getPref() {
+    const pref = await Preferences.get({
+      key: 'firstEnter'
+    });
+    if(pref.value === null) pref.value = "true"
+    setFirstEnter(pref.value)
+  }
+
+  useEffect(() => {
+    getPref()
+    return () => {
+      Preferences.set({
+        key: 'firstEnter',
+        value: 'false'
+      });
+    }
+  },[])
+
+  function getElement() {
+    let result;
+    switch (firstEnter) {
+      case 'unset':
+        result = 'Loading...'
+        break;
+      case 'true':
+        result = <Redirect to="/tab1" />
+        break;
+      case 'false':
+        result = <Redirect to="/tab2" />
+        break;
+    }
+    return result
+  }
+
+  return (
+      <IonApp>
+        <IonReactRouter>
+          <IonRouterOutlet>
+            <Route exact path="/tab1">
+              <Tab1 />
+            </Route>
+            <Route exact path="/tab2">
+              <Tab2 />
+            </Route>
+            <Route path="/tab3">
+              <Tab3 />
+            </Route>
+            <Route exact path="/">
+              {getElement()}
+            </Route>
+          </IonRouterOutlet>
+        </IonReactRouter>
+      </IonApp>
+  )
+}
+;
 
 export default App;
