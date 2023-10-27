@@ -5,7 +5,6 @@ import { usePhotoGallery, UserPhoto } from '../hooks/usePhotoGallery';
 
 const Tab2: React.FC = () => {
   const { deletePhoto, photos, takePhoto } = usePhotoGallery();
-  console.log(photos)
   const [photoToDelete, setPhotoToDelete] = useState<UserPhoto>();
 
   return (

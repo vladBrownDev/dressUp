@@ -98,7 +98,7 @@ const App: React.FC = () => {
               <AddLook/>
             </Route>
             <Route exact path="/">
-              {getElement()}
+              <Tab1/>
             </Route>
           </IonRouterOutlet>
         </IonReactRouter>
