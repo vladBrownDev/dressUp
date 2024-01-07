@@ -1,20 +1,21 @@
-import { useState, useEffect } from "react";
-import { isPlatform } from '@ionic/react';
+import {useState, useEffect} from "react";
+import {isPlatform} from '@ionic/react';
 
 
-import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
-import { Filesystem, Directory } from '@capacitor/filesystem';
-import { Preferences } from '@capacitor/preferences';
-import { Capacitor } from '@capacitor/core';
+import {Camera, CameraResultType, CameraSource, Photo} from '@capacitor/camera';
+import {Filesystem, Directory} from '@capacitor/filesystem';
+import {Preferences} from '@capacitor/preferences';
+import {Capacitor} from '@capacitor/core';
 
 const PHOTO_STORAGE = 'photos';
+
 export function usePhotoGallery() {
 
   const [photos, setPhotos] = useState<UserPhoto[]>([]);
 
   useEffect(() => {
     const loadSaved = async () => {
-      const { value } = await Preferences.get({key: PHOTO_STORAGE });
+      const {value} = await Preferences.get({key: PHOTO_STORAGE});
 
       const photosInPreferences = (value ? JSON.parse(value) : []) as UserPhoto[];
       // If running on the web...
@@ -42,8 +43,10 @@ export function usePhotoGallery() {
     const fileName = new Date().getTime() + '.jpeg';
     const savedFileImage = await savePicture(photo, fileName);
     const newPhotos = [savedFileImage, ...photos];
+    console.log(savedFileImage)
     setPhotos(newPhotos);
-    Preferences.set({key: PHOTO_STORAGE,value: JSON.stringify(newPhotos)});
+    Preferences.set({key: "selectedImage", value: savedFileImage.webviewPath ? savedFileImage.webviewPath : ''});
+    window.location.href += 'addLook'
   };
 
   const savePicture = async (photo: Photo, fileName: string): Promise<UserPhoto> => {
@@ -70,8 +73,7 @@ export function usePhotoGallery() {
         filepath: savedFile.uri,
         webviewPath: Capacitor.convertFileSrc(savedFile.uri),
       };
-    }
-    else {
+    } else {
       // Use webPath to display the new image instead of base64 since it's
       // already loaded into memory
       return {
@@ -86,7 +88,7 @@ export function usePhotoGallery() {
     const newPhotos = photos.filter(p => p.filepath !== photo.filepath);
 
     // Update photos array cache by overwriting the existing photo array
-    Preferences.set({key: PHOTO_STORAGE, value: JSON.stringify(newPhotos) });
+    Preferences.set({key: PHOTO_STORAGE, value: JSON.stringify(newPhotos)});
 
     // delete photo file from filesystem
     const filename = photo.filepath.substr(photo.filepath.lastIndexOf('/') + 1);

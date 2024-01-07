@@ -82,3 +82,26 @@ h1.welcomeTitle:nth-child(2) {
 .welcomeButton {
   font-size: 16px;
 }
+
+.addLookLabel {
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+#colorWrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+
+  span {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: black;
+    padding: 2px;
+    box-sizing: border-box;
+    border: 2px solid #4954E1;
+    outline: 2px solid black;
+  }
+}
